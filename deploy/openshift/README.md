@@ -1,3 +1,4 @@
+This deployment has been tested on OCP 4.3. 
 
 ### Create a dedicated project for socks shop then apply policy changes needed to run socks shop:
 
@@ -23,4 +24,10 @@ oc adm policy add-scc-to-user anyuid -z default
 
 ```shell
 oc apply -f complete-demo.yaml
+```
+
+### Expose the Front end Service :
+
+```shell
+oc expose service front-end
 ```
