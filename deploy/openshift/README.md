@@ -1,5 +1,5 @@
 
-### create a dedicated project for socks shop then apply policy changes needed to run socks shop:
+### Create a dedicated project for socks shop then apply policy changes needed to run socks shop:
 
 ```shell
 oc new-project sock-shop
