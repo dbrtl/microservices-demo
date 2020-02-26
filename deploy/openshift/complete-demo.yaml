@@ -213,7 +213,7 @@ spec:
     spec:
       containers:
       - name: front-end
-        image: weaveworksdemos/front-end:0.3.12
+        image: quay.io/nicolaso/front-end:0.3.12
         resources:
           requests:
             cpu: 100m
