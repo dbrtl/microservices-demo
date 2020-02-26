@@ -1,4 +1,4 @@
-This deployment has been tested on OCP 4.3. 
+This deployment has been tested on OCP 4.3.
 
 ### Create a dedicated project for socks shop then apply policy changes needed to run socks shop:
 
@@ -25,6 +25,11 @@ oc adm policy add-scc-to-user anyuid -z default
 ```shell
 oc apply -f complete-demo.yaml
 ```
+OR
+```shell
+oc apply -f https://raw.githubusercontent.com/NicolasO/microservices-demo/master/deploy/openshift/complete-demo.yaml
+```
+
 
 ### Expose the Front end Service :
 
