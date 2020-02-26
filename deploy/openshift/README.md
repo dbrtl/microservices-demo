@@ -23,11 +23,11 @@ oc adm policy add-scc-to-user anyuid -z default
 ### Deploy application in OpenShift using oc tools
 
 ```shell
-oc apply -f complete-demo.yaml
+oc create -f complete-demo.yaml
 ```
 OR
 ```shell
-oc apply -f https://raw.githubusercontent.com/NicolasO/microservices-demo/master/deploy/openshift/complete-demo.yaml
+oc create -f https://raw.githubusercontent.com/NicolasO/microservices-demo/master/deploy/openshift/complete-demo.yaml
 ```
 
 
@@ -35,4 +35,15 @@ oc apply -f https://raw.githubusercontent.com/NicolasO/microservices-demo/master
 
 ```shell
 oc expose service front-end
+```
+
+
+### to delete application in OpenShift using oc tools
+
+```shell
+oc delete -f complete-demo.yaml
+```
+OR
+```shell
+oc delete -f https://raw.githubusercontent.com/NicolasO/microservices-demo/master/deploy/openshift/complete-demo.yaml
 ```

@@ -18,6 +18,15 @@ spec:
         ports:
         - name: mongo
           containerPort: 27017
+        securityContext:
+          capabilities:
+            drop:
+              - all
+            add:
+              - CHOWN
+              - SETGID
+              - SETUID
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
@@ -67,6 +76,15 @@ spec:
            value: zipkin.jaeger.svc.cluster.local
          - name: JAVA_OPTS
            value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
@@ -108,7 +126,7 @@ spec:
     spec:
       containers:
       - name: catalogue-db
-        image: weaveworksdemos/catalogue-db:0.3.5
+        image: weaveworksdemos/catalogue-db:0.3.0
         env:
           - name: MYSQL_ROOT_PASSWORD
             value: fake_password
@@ -117,9 +135,6 @@ spec:
         ports:
         - name: mysql
           containerPort: 3306
-        securityContext:
-          runAsNonRoot: false
-          runAsUser: 0
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
@@ -157,6 +172,15 @@ spec:
         image: weaveworksdemos/catalogue:0.3.5
         ports:
         - containerPort: 80
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
@@ -189,13 +213,20 @@ spec:
     spec:
       containers:
       - name: front-end
-        image: weaveworksdemos/front-end:0.3.12
+        image: quay.io/nicolaso/front-end:0.3.12
         resources:
           requests:
             cpu: 100m
             memory: 100Mi
         ports:
         - containerPort: 8079
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+          readOnlyRootFilesystem: true
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
@@ -207,17 +238,13 @@ metadata:
     name: front-end
   namespace: sock-shop
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
-    - name: web
-      port: 80
-      targetPort: 8079
-      protocol: TCP
-#    nodePort: 30001
+  - port: 80
+    targetPort: 8079
+    nodePort: 30001
   selector:
     name: front-end
-status:
-  loadBalancer: {}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -239,6 +266,15 @@ spec:
         ports:
         - name: mongo
           containerPort: 27017
+        securityContext:
+          capabilities:
+            drop:
+              - all
+            add:
+              - CHOWN
+              - SETGID
+              - SETUID
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
@@ -288,6 +324,15 @@ spec:
            value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
         ports:
         - containerPort: 80
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
@@ -332,6 +377,15 @@ spec:
         image: weaveworksdemos/payment:0.4.3
         ports:
         - containerPort: 80
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
@@ -408,6 +462,16 @@ spec:
         image: rabbitmq:3.6.8
         ports:
         - containerPort: 5672
+        securityContext:
+          capabilities:
+            drop:
+              - all
+            add:
+              - CHOWN
+              - SETGID
+              - SETUID
+              - DAC_OVERRIDE
+          readOnlyRootFilesystem: true
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
@@ -450,6 +514,15 @@ spec:
            value: -Xms64m -Xmx128m -XX:PermSize=32m -XX:MaxPermSize=64m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom
         ports:
         - containerPort: 80
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
@@ -495,6 +568,15 @@ spec:
         ports:
         - name: mongo
           containerPort: 27017
+        securityContext:
+          capabilities:
+            drop:
+              - all
+            add:
+              - CHOWN
+              - SETGID
+              - SETUID
+          readOnlyRootFilesystem: true
         volumeMounts:
         - mountPath: /tmp
           name: tmp-volume
@@ -542,6 +624,15 @@ spec:
         env:
         - name: MONGO_HOST
           value: user-db:27017
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 10001
+          capabilities:
+            drop:
+              - all
+            add:
+              - NET_BIND_SERVICE
+          readOnlyRootFilesystem: true
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
