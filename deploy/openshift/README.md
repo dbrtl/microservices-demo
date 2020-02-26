@@ -3,7 +3,7 @@ This deployment has been tested on OCP 4.3.
 ### Create a dedicated project for socks shop then apply policy changes needed to run socks shop:
 
 ```shell
-oc new-project sock-shop
+oc new-project socks-shop
 ```
 ### Socks shop pods need full access to Kubernetes API via 'socks-shop' service account
 
