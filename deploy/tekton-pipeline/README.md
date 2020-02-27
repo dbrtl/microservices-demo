@@ -1,6 +1,6 @@
 This Readme will help to build the Tekton pipeline
 
-
+https://itnext.io/explore-different-methods-to-build-and-push-image-to-private-registry-with-tekton-pipelines-5cad9dec1ddc
 
 ### Create Secret
 
@@ -8,17 +8,22 @@ This Readme will help to build the Tekton pipeline
 kubectl create secret docker-registry regcred --docker-server=quay.io/nicolaso/frontend --docker-username=XXXXXXX --docker-password=XXXXXXX --docker-email=XXXXXX
 ```
 ### Troubeshoot
+
+tkn pipeline start build-and-deploy
+tkn pipelinerun logs build-and-deploy-run-z2rz8 -f -n pipelines-tutorial
+
 ```shell
 tkn pipeline ls
 tkn resource ls
 tkn pipeline logs -f
-
-
-
-
-
-
 ```
+
+If you want to re-run the pipeline again, you can use the following short-hand command to rerun the last pipelinerun again that uses the same pipeline resources and service account used in the previous pipeline run:
+
+```shell
+tkn pipeline start build-and-deploy --last
+```
+
 
 ```shell
 oc adm policy add-cluster-role-to-user cluster-admin -z socks-shop

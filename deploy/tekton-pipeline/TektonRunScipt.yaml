@@ -83,9 +83,9 @@ spec:
 apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
-  serviceAccountName: build-registry
   name: build-and-deploy
 spec:
+  serviceAccountName: build-registry
   resources:
     - name: front-end-repo
       type: git
@@ -108,28 +108,22 @@ spec:
         - name: TLSVERIFY
           value: "false"
 
-    - name: apply-front-end-manifests
+    - name: deploy-web
       taskRef:
-        name: apply-manifests
+        name: deploy-using-kubectl
       resources:
         inputs:
           - name: source
-            resource: front-end-repo
-      runAfter:
-        - build-front-end
-
-    - name: update-front-end-image
-      taskRef:
-        name: update-deployment
-      resources:
-        inputs:
+            resource: source-repo
           - name: image
-            resource: front-end-image
+            resource: web-image
+            from:
+              - build-skaffold-web
       params:
-        - name: deployment
-          value: "front-end"
-      runAfter:
-        - apply-front-end-manifests
+        - name: path
+          value: /workspace/source/deployment/front-end.yaml
+        - name: yamlPathToImage
+          value: "spec.template.spec.containers[0].image"
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
