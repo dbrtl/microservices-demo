@@ -116,9 +116,9 @@ spec:
           - name: source
             resource: source-repo
           - name: image
-            resource: web-image
+            resource: front-end-image
             from:
-              - build-skaffold-web
+              - build-front-end
       params:
         - name: path
           value: /workspace/source/deployment/front-end.yaml
