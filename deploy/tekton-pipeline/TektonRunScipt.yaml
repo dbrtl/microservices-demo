@@ -138,8 +138,7 @@ spec:
       params:
         - name: ARGS
           value: "oc apply -f https://github.com/NicolasO/front-end/blob/master/deployment/front-end.yaml"
-        - name: yamlPathToImage
-          value: "spec.template.spec.containers[0].image"
+
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
