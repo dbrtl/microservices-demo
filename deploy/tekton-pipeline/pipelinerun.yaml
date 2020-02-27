@@ -3,6 +3,7 @@ kind: PipelineRun
 metadata:
   generateName: build-and-deploy-pipelinerun-
 spec:
+  serviceAccountName: build-registry
   pipelineRef:
     name: build-and-deploy
   resources:

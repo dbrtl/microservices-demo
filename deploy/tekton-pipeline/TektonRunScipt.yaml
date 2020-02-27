@@ -1,3 +1,11 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: build-registry
+secrets:
+  - name: regcred
+
+---
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata:
