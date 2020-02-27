@@ -1,0 +1,138 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: apply-manifests
+spec:
+  inputs:
+    resources:
+      - {type: git, name: source}
+    params:
+      - name: manifest_dir
+        description: The directory in source that contains yaml manifests
+        type: string
+        default: "k8s"
+
+  steps:
+    - name: apply
+      image: quay.io/openshift/origin-cli:latest
+      workingDir: /workspace/source
+      command: ["/bin/bash", "-c"]
+      args:
+        - |-
+          echo Applying manifests in $(inputs.params.manifest_dir) directory
+          oc apply -f $(inputs.params.manifest_dir)
+          echo -----------------------------------
+
+
+---
+  apiVersion: tekton.dev/v1alpha1
+  kind: Task
+  metadata:
+    name: update-deployment
+  spec:
+    inputs:
+      resources:
+        - {type: image, name: image}
+      params:
+        - name: deployment
+          description: The name of the deployment patch the image
+          type: string
+
+    steps:
+      - name: patch
+        image: quay.io/openshift/origin-cli:latest
+        command: ["/bin/bash", "-c"]
+        args:
+          - |-
+            oc patch deployment $(inputs.params.deployment) --patch='{"spec":{"template":{"spec":{
+              "containers":[{
+                "name": "$(inputs.params.deployment)",
+                "image":"$(inputs.resources.image.url)"
+              }]
+            }}}}'
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: api-repo
+spec:
+  type: git
+  params:
+    - name: url
+      value: https://github.com/NicolasO/front-end.git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: api-image
+spec:
+  type: image
+  params:
+    - name: url
+      value: quay.io/nicolaso/front-end:latest
+---
+
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: build-and-deploy
+spec:
+  resources:
+    - name: front-end-repo
+      type: git
+    - name: front-end-image
+      type: image
+
+  tasks:
+    - name: build-front-end
+      taskRef:
+        name: buildah
+        kind: ClusterTask
+      resources:
+        inputs:
+          - name: source
+            resource: front-end-repo
+        outputs:
+          - name: image
+            resource: front-end-image
+      params:
+        - name: TLSVERIFY
+          value: "false"
+
+    - name: apply-front-end-manifests
+      taskRef:
+        name: apply-manifests
+      resources:
+        inputs:
+          - name: source
+            resource: front-end-repo
+      runAfter:
+        - build-front-end
+
+    - name: update-front-end-image
+      taskRef:
+        name: update-deployment
+      resources:
+        inputs:
+          - name: image
+            resource: front-end-image
+      params:
+        - name: deployment
+          value: "front-end"
+      runAfter:
+        - apply-front-end-manifests
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  generateName: build-and-deploy-pipelinerun-
+spec:
+  pipelineRef:
+    name: build-and-deploy
+  resources:
+    - name: front-end-repo
+      resourceRef:
+        name: front-end-repo
+    - name: front-end-image
+      resourceRef:
+        name: front-end-image

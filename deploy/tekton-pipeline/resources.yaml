@@ -1,0 +1,20 @@
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: api-repo
+spec:
+  type: git
+  params:
+    - name: url
+      value: https://github.com/NicolasO/front-end.git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: api-image
+spec:
+  type: image
+  params:
+    - name: url
+      value: quay.io/nicolaso/front-end:latest
