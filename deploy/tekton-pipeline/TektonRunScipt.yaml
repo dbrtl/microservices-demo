@@ -137,7 +137,7 @@ spec:
         - build-front-end
       params:
         - name: ARGS
-          value: "oc apply -f https://github.com/NicolasO/front-end/blob/master/deployment/front-end.yaml"
+          value: "oc apply -f https://raw.githubusercontent.com/NicolasO/front-end/master/deployment/front-end.yaml"
 
 ---
 apiVersion: tekton.dev/v1alpha1
