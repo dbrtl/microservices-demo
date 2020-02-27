@@ -83,6 +83,7 @@ spec:
 apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
+  serviceAccountName: build-registry
   name: build-and-deploy
 spec:
   resources:
@@ -135,6 +136,7 @@ kind: PipelineRun
 metadata:
   generateName: build-and-deploy-pipelinerun-
 spec:
+  serviceAccountName: build-registry
   pipelineRef:
     name: build-and-deploy
   resources:
