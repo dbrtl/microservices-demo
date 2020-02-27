@@ -107,7 +107,7 @@ kind: Pipeline
 metadata:
   name: build-and-deploy
 spec:
-  serviceAccountName: build-registry
+#  serviceAccountName: build-registry
   resources:
     - name: front-end-repo
       type: git
