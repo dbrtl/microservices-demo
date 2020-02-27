@@ -31,7 +31,29 @@ spec:
           oc apply -f $(inputs.params.manifest_dir)
           echo -----------------------------------
 
-
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: openshift-client
+spec:
+  inputs:
+    params:
+      - name: SCRIPT
+        description: The OpenShift CLI arguments to run
+        type: string
+        default: "oc $@"
+      - name: ARGS
+        description: The OpenShift CLI arguments to run
+        type: array
+        default:
+        - "help"
+  steps:
+    - name: oc
+      image: quay.io/openshift/origin-cli:latest
+      script: "$(inputs.params.SCRIPT)"
+      args:
+        - "$(inputs.params.ARGS)"
 ---
   apiVersion: tekton.dev/v1alpha1
   kind: Task
@@ -108,20 +130,14 @@ spec:
         - name: TLSVERIFY
           value: "false"
 
-    - name: deploy-web
+    - name: deploy-front-end
       taskRef:
-        name: deploy-using-kubectl
-      resources:
-        inputs:
-          - name: source
-            resource: source-repo
-          - name: image
-            resource: front-end-image
-            from:
-              - build-front-end
+        name: openshift-client
+      runAfter:
+        - build-front-end
       params:
-        - name: path
-          value: /workspace/source/deployment/front-end.yaml
+        - name: ARGS
+          value: "oc apply -f https://github.com/NicolasO/front-end/blob/master/deployment/front-end.yaml"
         - name: yamlPathToImage
           value: "spec.template.spec.containers[0].image"
 ---
