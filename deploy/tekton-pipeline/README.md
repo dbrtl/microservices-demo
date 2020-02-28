@@ -7,6 +7,17 @@ https://itnext.io/explore-different-methods-to-build-and-push-image-to-private-r
 ```shell
 kubectl create secret docker-registry regcred --docker-server=quay.io/nicolaso/frontend --docker-username=XXXXXXX --docker-password=XXXXXXX --docker-email=XXXXXX
 ```
+
+### ServiceAccount
+
+If you don't specify a service account to be used for running the TaskRun or PipelineRun, the default service account. OpenShift by default does not allow the default service account to modify objects in the namespace. Therefore you should either explicitly grant permission to the default service account (by creating rolebindings) or create a new service account with sufficient privileges and specify it on the TaskRun or PipelineRun.
+
+You can do the former via oc and running the following command, replacing <namespace> with your target namespace:
+
+
+```shell
+oc policy add-role-to-user edit -z default -n socks-shop
+```
 ### Troubeshoot
 
 tkn pipeline start build-and-deploy
@@ -37,6 +48,8 @@ oc adm policy add-scc-to-user privileged -z socks-shop
 
 ```shell
 oc adm policy add-scc-to-user anyuid -z default
+oc adm policy add-scc-to-user anyuid -z build-registry
+oc adm policy add-role-to-user edit system:serviceaccount:socks-shop:build-registry
 ```
 ### Deploy application in OpenShift using oc tools
 

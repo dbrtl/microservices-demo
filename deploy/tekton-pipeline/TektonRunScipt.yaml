@@ -32,7 +32,6 @@ kind: Pipeline
 metadata:
   name: build-and-deploy
 spec:
-#  serviceAccountName: build-registry
   resources:
     - name: front-end-repo
       type: git
@@ -63,7 +62,10 @@ spec:
         - build-front-end
       params:
         - name: ARGS
-          value: "apply -f https://raw.githubusercontent.com/NicolasO/front-end/master/deployment/front-end.yaml"
+          value:
+            - rollout
+            - latest
+            - front-end
 
 ---
 apiVersion: tekton.dev/v1alpha1
