@@ -31,6 +31,16 @@ oc create -f https://raw.githubusercontent.com/NicolasO/microservices-demo/maste
 ```
 
 
+
+### Deployment of the Front-end Micro Service :
+in the privous deploiment the front end service is not yet deployed. you have to deploy it
+
+comming soon !!!!!!!!!!!!!!!!!! :)
+
+
+
+
+
 ### Expose the Front end Service :
 
 ```shell
