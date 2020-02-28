@@ -53,14 +53,11 @@ oc adm policy add-scc-to-user anyuid -z default
 oc adm policy add-scc-to-user anyuid -z build-registry
 oc adm policy add-role-to-user edit system:serviceaccount:socks-shop:build-registry
 ```
-### Deploy application in OpenShift using oc tools
+### Deploy tkn pipeline
+
 
 ```shell
-oc create -f complete-demo.yaml
-```
-OR
-```shell
-oc create -f https://raw.githubusercontent.com/NicolasO/microservices-demo/master/deploy/openshift/complete-demo.yaml
+oc create -f https://raw.githubusercontent.com/NicolasO/microservices-demo/master/deploy/tekton-pipeline/TektonRunScript.yaml
 ```
 
 

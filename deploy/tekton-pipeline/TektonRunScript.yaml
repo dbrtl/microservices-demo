@@ -4,7 +4,13 @@ metadata:
   name: build-registry
 secrets:
   - name: regcred
-
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pipeline
+secrets:
+  - name: regcred
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
@@ -67,19 +73,19 @@ spec:
             - latest
             - front-end
 
----
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineRun
-metadata:
-  generateName: build-and-deploy-pipelinerun-
-spec:
-  serviceAccountName: build-registry
-  pipelineRef:
-    name: build-and-deploy
-  resources:
-    - name: front-end-repo
-      resourceRef:
-        name: front-end-repo
-    - name: front-end-image
-      resourceRef:
-        name: front-end-image
+#---
+#apiVersion: tekton.dev/v1alpha1
+#kind: PipelineRun
+#metadata:
+#  generateName: build-and-deploy-pipelinerun-
+#spec:
+#  serviceAccountName: build-registry
+#  pipelineRef:
+#    name: build-and-deploy
+#  resources:
+#    - name: front-end-repo
+#      resourceRef:
+#        name: front-end-repo
+#    - name: front-end-image
+#      resourceRef:
+#        name: front-end-image
