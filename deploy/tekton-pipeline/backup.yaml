@@ -1,4 +1,29 @@
 apiVersion: v1
+kind: Service
+metadata:
+  name: front-end
+  labels:
+    name: front-end
+  namespace: socks-shop
+spec:
+  type: ClusterIP
+  ports:
+    - name: web
+      port: 80
+      targetPort: 8079
+      protocol: TCP
+    nodePort: 30001
+  selector:
+    name: front-end
+    app: front-end
+    deployment: front-end
+    deploymentconfig: front-end
+status:
+  loadBalancer: {}
+
+
+
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: build-registry
@@ -107,7 +132,7 @@ kind: Pipeline
 metadata:
   name: build-and-deploy
 spec:
-#  serviceAccountName: build-registry
+  serviceAccountName: build-registry
   resources:
     - name: front-end-repo
       type: git

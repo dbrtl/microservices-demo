@@ -27,6 +27,8 @@ tkn pipelinerun logs build-and-deploy-run-z2rz8 -f -n pipelines-tutorial
 tkn pipeline ls
 tkn resource ls
 tkn pipeline logs -f
+tkn pipeline start [PIPELINENAME] -n [Project] -s [SERVICEACCOUNT]
+
 ```
 
 If you want to re-run the pipeline again, you can use the following short-hand command to rerun the last pipelinerun again that uses the same pipeline resources and service account used in the previous pipeline run:

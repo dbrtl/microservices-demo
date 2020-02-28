@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: carts-db
@@ -7,9 +7,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: carts-db
   template:
     metadata:
       labels:
@@ -46,7 +43,7 @@ spec:
   selector:
     name: carts-db
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: carts
@@ -55,9 +52,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: carts
   template:
     metadata:
       labels:
@@ -98,7 +92,7 @@ spec:
   selector:
     name: carts
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: catalogue-db
@@ -107,9 +101,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: catalogue-db
   template:
     metadata:
       labels:
@@ -147,7 +138,7 @@ spec:
   selector:
     name: catalogue-db
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: catalogue
@@ -156,9 +147,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: catalogue
   template:
     metadata:
       labels:
@@ -186,9 +174,52 @@ spec:
     targetPort: 80
   selector:
     name: catalogue
-
+#---
+#apiVersion: extensions/v1beta1
+#kind: Deployment
+#metadata:
+#  name: front-end
+#  namespace: socks-shop
+#spec:
+#  replicas: 1
+#  template:
+#    metadata:
+#      labels:
+#        name: front-end
+#    spec:
+#      containers:
+#      - name: front-end
+#        image: weaveworksdemos/front-end:0.3.12
+#        resources:
+#          requests:
+#            cpu: 100m
+#            memory: 100Mi
+#        ports:
+#        - containerPort: 8079
+#      nodeSelector:
+#        beta.kubernetes.io/os: linux
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: front-end
+#  labels:
+#    name: front-end
+#  namespace: socks-shop
+#spec:
+#  type: ClusterIP
+#  ports:
+#    - name: web
+#      port: 80
+#      targetPort: 8079
+#      protocol: TCP
+#    nodePort: 30001
+#  selector:
+#    name: front-end
+#status:
+#  loadBalancer: {}
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: orders-db
@@ -197,9 +228,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: orders-db
   template:
     metadata:
       labels:
@@ -236,7 +264,7 @@ spec:
   selector:
     name: orders-db
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: orders
@@ -245,9 +273,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: orders
   template:
     metadata:
       labels:
@@ -288,7 +313,7 @@ spec:
   selector:
     name: orders
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: payment
@@ -297,9 +322,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: payment
   template:
     metadata:
       labels:
@@ -328,7 +350,7 @@ spec:
   selector:
     name: payment
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: queue-master
@@ -337,9 +359,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: queue-master
   template:
     metadata:
       labels:
@@ -370,7 +389,7 @@ spec:
   selector:
     name: queue-master
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: rabbitmq
@@ -379,9 +398,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: rabbitmq
   template:
     metadata:
       labels:
@@ -410,7 +426,7 @@ spec:
   selector:
     name: rabbitmq
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: shipping
@@ -419,9 +435,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: shipping
   template:
     metadata:
       labels:
@@ -462,7 +475,7 @@ spec:
   selector:
     name: shipping
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: user-db
@@ -471,9 +484,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: user-db
   template:
     metadata:
       labels:
@@ -510,7 +520,7 @@ spec:
   selector:
     name: user-db
 ---
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: user
@@ -519,9 +529,6 @@ metadata:
   namespace: socks-shop
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      name: user
   template:
     metadata:
       labels:
