@@ -133,11 +133,12 @@ spec:
     - name: deploy-front-end
       taskRef:
         name: openshift-client
+        kind: ClusterTask
       runAfter:
         - build-front-end
       params:
         - name: ARGS
-          value: "oc apply -f https://raw.githubusercontent.com/NicolasO/front-end/master/deployment/front-end.yaml"
+          value: "apply -f https://raw.githubusercontent.com/NicolasO/front-end/master/deployment/front-end.yaml"
 
 ---
 apiVersion: tekton.dev/v1alpha1
