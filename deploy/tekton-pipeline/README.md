@@ -8,6 +8,18 @@ https://itnext.io/explore-different-methods-to-build-and-push-image-to-private-r
 kubectl create secret docker-registry regcred --docker-server=quay.io/nicolaso/frontend --docker-username=XXXXXXX --docker-password=XXXXXXX --docker-email=XXXXXX
 ```
 
+### Edit the Service Account pipleine (default) and add the accoiunt
+```shell
+oc edit sa pipeline
+
+secrets:
+- name: pipeline-token-6zj9m
+- name: pipeline-dockercfg-jtsx5
+- name: regcred
+
+
+```
+
 ### ServiceAccount
 
 If you don't specify a service account to be used for running the TaskRun or PipelineRun, the default service account. OpenShift by default does not allow the default service account to modify objects in the namespace. Therefore you should either explicitly grant permission to the default service account (by creating rolebindings) or create a new service account with sufficient privileges and specify it on the TaskRun or PipelineRun.

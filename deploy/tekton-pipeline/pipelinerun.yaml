@@ -13,3 +13,100 @@ spec:
     - name: front-end-image
       resourceRef:
         name: front-end-image
+
+
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  generateName: front-end-buildah-run-
+  selfLink: >-
+    /apis/tekton.dev/v1alpha1/namespaces/socks-shop/pipelineruns/front-end-buildah-run-fvdxx
+  resourceVersion: '55783'
+  name: front-end-buildah-run-fvdxx
+  uid: 7d2fed71-f236-4eb0-b287-3ea3b9c4b272
+  creationTimestamp: '2020-02-28T17:55:43Z'
+  generation: 1
+  namespace: socks-shop
+  labels:
+    app.kubernetes.io/instance: front-end
+    pipeline.openshift.io/strategy: docker
+    tekton.dev/pipeline: front-end-buildah
+spec:
+  params:
+    - name: IMAGE_NAME
+      value: 'front-end:1.0.0'
+  pipelineRef:
+    name: front-end-buildah
+  resources:
+    - name: app-source
+      resourceRef:
+        name: front-end-repo
+    - name: app-image
+      resourceRef:
+        name: front-end-image
+  serviceAccountName: pipeline
+  timeout: 1h0m0s
+status:
+  completionTime: '2020-02-28T17:56:59Z'
+  conditions:
+    - lastTransitionTime: '2020-02-28T17:56:59Z'
+      message: TaskRun front-end-buildah-run-fvdxx-build-hlwwq has failed
+      reason: Failed
+      status: 'False'
+      type: Succeeded
+  startTime: '2020-02-28T17:55:43Z'
+  taskRuns:
+    front-end-buildah-run-fvdxx-build-hlwwq:
+      pipelineTaskName: build
+      status:
+        completionTime: '2020-02-28T17:56:59Z'
+        conditions:
+          - lastTransitionTime: '2020-02-28T17:56:59Z'
+            message: >-
+              "step-image-digest-exporter-2thdk" exited with code 1 (image:
+              "quay.io/openshift-pipeline/tektoncd-pipeline-imagedigestexporter@sha256:bc12f889c9f28f7f7efeb9854df0e390869fdf1b6505bea31a4c17b3014becd3");
+              for logs run: kubectl -n socks-shop logs
+              front-end-buildah-run-fvdxx-build-hlwwq-pod-45wqs -c
+              step-image-digest-exporter-2thdk
+            reason: Failed
+            status: 'False'
+            type: Succeeded
+        podName: front-end-buildah-run-fvdxx-build-hlwwq-pod-45wqs
+        startTime: '2020-02-28T17:55:43Z'
+        steps:
+          - container: step-build
+            imageID: >-
+              quay.io/buildah/stable@sha256:15ecf2c5a3d013221e366549802c79eed2db7aebeb6bbf492b13d2d877df792a
+            name: build
+            terminated:
+              containerID: >-
+                cri-o://0ba8b41d36f710ef27fc0b2f0ea00443038dd594aa4bf5866bb6d77ddeec4205
+              exitCode: 0
+              finishedAt: '2020-02-28T17:56:54Z'
+              reason: Completed
+              startedAt: '2020-02-28T17:56:03Z'
+          - container: step-create-dir-image-vvw79
+            imageID: >-
+              registry.access.redhat.com/ubi8/ubi-minimal@sha256:47e2f82dbede8ff990e6e240f82d78830e7558f7b30df7bd8c0693992018b1e3
+            name: create-dir-image-vvw79
+            terminated:
+              containerID: >-
+                cri-o://8379c9450c21e1be94fd8ed99bf8cf3a7ce661f5904a18dbf0cba16174c6e263
+              exitCode: 0
+              finishedAt: '2020-02-28T17:55:58Z'
+              reason: Completed
+              startedAt: '2020-02-28T17:55:58Z'
+          - container: step-git-source-front-end-repo-2m2qg
+            imageID: >-
+              quay.io/openshift-pipeline/tektoncd-pipeline-git-init@sha256:0956ae04297fe4740af495ec1d6d51bd7fbd79686f5d5a4ea09ca44c4e9838cf
+            name: git-source-front-end-repo-2m2qg
+            terminated:
+              containerID: >-
+                cri-o://9af8b5105f8af69b32e0803049ddec6a378481ea75db2c5cefa2e859a7e2842d
+              exitCode: 0
+              finishedAt: '2020-02-28T17:56:02Z'
+              message: >-
+                [{"name":"","digest":"","key":"commit","value":"7da11772e1c085e004948b1ccf32e4f4b9cc131d","resourceRef":{}}]
+              reason: Completed
+              startedAt: '2020-02-28T17:55:58Z'
