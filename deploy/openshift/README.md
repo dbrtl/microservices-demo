@@ -33,11 +33,18 @@ oc create -f https://raw.githubusercontent.com/NicolasO/microservices-demo/maste
 
 
 ### Deployment of the Front-end Micro Service :
-in the privous deploiment the front end service is not yet deployed. you have to deploy it
+in the privous deploiment the front end service is not yet deployed. you have to deploy it :
 
-comming soon !!!!!!!!!!!!!!!!!! :)
+First Deploy the Deployment Config
 
+```shell
+oc create -f https://raw.githubusercontent.com/NicolasO/front-end/master/deployment/DeploymentConfig-front-end.yaml
+```
 
+Then Deploy the Service
+```shell
+oc create -f https://raw.githubusercontent.com/NicolasO/front-end/master/deployment/Service-front-end.yaml
+```
 
 
 
@@ -46,12 +53,37 @@ comming soon !!!!!!!!!!!!!!!!!! :)
 ```shell
 oc expose service front-end
 ```
+### Process to demo color change
+
+Go and see the portal
+Please make your change in https://github.com/NicolasO/front-end/blob/master/public/css/style.blue.css
+
+```shell
+#top {
+  background: #555555;
+  padding: 10px 0;
+}
+```
+
+by
+```shell
+#top {
+  background: #01a982;
+  padding: 10px 0;
+}
+```
+
+Commit your change
+
+```shell
+oc rollout latest dc/front-end
+```
 
 
 ### to delete application in OpenShift using oc tools
 
 ```shell
-oc delete -f complete-demo.yaml
+oc delete project socks-shop
 ```
 OR
 ```shell
