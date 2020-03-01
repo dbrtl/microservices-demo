@@ -544,7 +544,7 @@ metadata:
   name: user
   labels:
     name: user
-  namespace: socks-shop
+  namespace: chaussettes-shop
 spec:
   ports:
     # the port that this service should serve on
